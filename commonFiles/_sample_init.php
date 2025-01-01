@@ -1,5 +1,5 @@
 <?php
 $CONFIG = [
-    "ROOT_URL" => ""
+    "ROOT_URL" => "" // URL of Server
 ]
 ?>
