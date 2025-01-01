@@ -1,1 +1,5 @@
-<?php $ROOT_URL="" ?>
+<?php
+$CONFIG = [
+    "ROOT_URL" => ""
+]
+?>

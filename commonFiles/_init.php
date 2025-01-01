@@ -1,1 +1,5 @@
-<?php $ROOT_URL="http://localhost/hrms" ?>
+<?php
+$CONFIG = [
+    "ROOT_URL" => "http://localhost/hrms/"
+]
+?>
