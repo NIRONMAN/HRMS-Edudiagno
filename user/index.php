@@ -2,12 +2,12 @@
 <html lang="en">
 
 <head>
-    <?php include("./commonFiles/htmlHeader.php") ?>
+    <?php include("../commonFiles/htmlHeader.php") ?>
 </head>
 
 <body>
     <div class="flex">
-        <div class="mx-auto">Home Page</div>
+        <div class="mx-auto">User Page</div>
     </div>
 </body>
 

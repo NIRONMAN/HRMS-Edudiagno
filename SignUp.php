@@ -1,11 +1,14 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>HRMS</title>
+    <?php include("./commonFiles/htmlHeader.php") ?>
 </head>
+
 <body>
-    
+    <div class="flex">
+        <div class="mx-auto">SignUp Page</div>
+    </div>
 </body>
+
 </html>
