@@ -1,0 +1,7 @@
+{
+    "name": "your-name/hrms-edudiagno",
+    "description": "HRMS project for uploading attendance",
+    "require": {
+        "phpoffice/phpspreadsheet": "1.18"
+    }
+}
