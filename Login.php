@@ -2,26 +2,6 @@
 // Include the init.php file for configuration
 include("./commonFiles/_init.php");
 
-$CONFIG = [
-    "ROOT_URL" => "http://localhost/website/",
-    "DB_SERVER_NAME" => "localhost",
-    "DB_USER_NAME" => "root",
-    "DB_PASSWORD" => "",
-    "DB_NAME" => "hrms" // Add your database name here
-];
-
-// Establish database connection using config details
-try {
-    $conn = new PDO(
-        "mysql:host=" . $CONFIG['DB_SERVER_NAME'] . ";dbname=" . $CONFIG['DB_NAME'],
-        $CONFIG['DB_USER_NAME'],
-        $CONFIG['DB_PASSWORD']
-    );
-    $conn->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
-} catch (PDOException $e) {
-    die("Database connection failed: " . $e->getMessage());
-}
-
 // Initialize variables for error/success messages
 $error = $success = "";
 
@@ -54,9 +34,11 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
             font-family: Arial, sans-serif;
             margin: 20px;
         }
+
         .message {
             color: red;
         }
+
         .success {
             color: green;
         }
