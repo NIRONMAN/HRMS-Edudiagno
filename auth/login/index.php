@@ -1,5 +1,5 @@
 <?php
-include("./commonFiles/_init.php");
+include("../../commonFiles/_init.php");
 
 // Initialize variables for error/success messages
 $error = $success = "";
@@ -24,7 +24,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <?php include("./commonFiles/htmlHeader.php") ?>
+    <?php include("../../commonFiles/_init.php") ?>
     <link rel="stylesheet" href="public/css/login.css">
 </head>
 <body>

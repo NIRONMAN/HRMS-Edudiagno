@@ -1,10 +1,10 @@
-<?php include("./commonFiles/_init.php") ?>
+<?php include(__DIR__."/commonFiles/_init.php")?>
 
 <!DOCTYPE html>
 <html lang="en">
 
 <head>
-    <?php include("./commonFiles/htmlHeader.php") ?>
+    <?php include("../../commonFiles/htmlHeader.php") ?>
     <link rel="stylesheet" href="public/css/signup.css">
 </head>
 
