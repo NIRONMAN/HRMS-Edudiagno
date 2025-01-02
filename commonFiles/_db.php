@@ -1,4 +1,5 @@
 <?php
+include(__DIR__."/_init.php");
 $servername = $CONFIG["DB_SERVER_NAME"];
 $username = $CONFIG["DB_USER_NAME"];
 $password = $CONFIG["DB_PASSWORD"];
