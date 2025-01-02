@@ -47,7 +47,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_FILES['excel_file'])) {
             // Execute the statement
             $stmt->execute();
 
-            header("http://localhost/HRMS-Edudiagno/index.php");
+            header("Location: " . $CONFIG["ROOT_URL"]);
         }
     }
 }
