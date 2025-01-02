@@ -1,17 +1,14 @@
 <?php
-// Include the init.php file for configuration
 include("./commonFiles/_init.php");
 
 // Initialize variables for error/success messages
 $error = $success = "";
 
-// Handle form submission
 if ($_SERVER["REQUEST_METHOD"] == "POST") {
     $inputUsername = $_POST['username'];
-    $inputPassword = md5($_POST['password']); // Use MD5 for simplicity; prefer password_hash() in production
+    $inputPassword = md5($_POST['password']);
 
-    // Query to check credentials
-    $stmt = $conn->prepare("SELECT * FROM users WHERE username = :username AND password = :password");
+    $stmt = $conn->prepare("SELECT * FROM employee WHERE name = :username AND password = :password");
     $stmt->bindParam(':username', $inputUsername);
     $stmt->bindParam(':password', $inputPassword);
     $stmt->execute();
@@ -26,48 +23,31 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 
 <!DOCTYPE html>
 <html lang="en">
-
 <head>
     <?php include("./commonFiles/htmlHeader.php") ?>
-    <style>
-        body {
-            font-family: Arial, sans-serif;
-            margin: 20px;
-        }
-
-        .message {
-            color: red;
-        }
-
-        .success {
-            color: green;
-        }
-    </style>
+    <link rel="stylesheet" href="public/css/login.css">
 </head>
-
 <body>
-    <div>
-        <div>Login Page</div>
-    </div>
+    <div class="container">
+        <div class="form-wrapper">
+            <h1>Login Page</h1>
+            <?php if ($error): ?>
+                <p class="message"><?= $error ?></p>
+            <?php endif; ?>
+            <?php if ($success): ?>
+                <p class="success"><?= $success ?></p>
+            <?php endif; ?>
 
-    <div>
-        <?php if ($error): ?>
-            <p class="message"><?= $error ?></p>
-        <?php endif; ?>
-        <?php if ($success): ?>
-            <p class="success"><?= $success ?></p>
-        <?php endif; ?>
+            <form method="POST" action="">
+                <label for="username">Username:</label>
+                <input type="text" id="username" name="username" required>
 
-        <form method="POST" action="">
-            <label for="username">Username:</label><br>
-            <input type="text" id="username" name="username" required><br><br>
+                <label for="password">Password:</label>
+                <input type="password" id="password" name="password" required>
 
-            <label for="password">Password:</label><br>
-            <input type="password" id="password" name="password" required><br><br>
-
-            <button type="submit">Login</button>
-        </form>
+                <button type="submit">Login</button>
+            </form>
+        </div>
     </div>
 </body>
-
 </html>
