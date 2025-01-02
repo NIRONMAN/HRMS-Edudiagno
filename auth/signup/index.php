@@ -23,17 +23,17 @@
         <label for="role">Select Role:</label>
         <br>
         <label>
-            <input type="radio" name="role" value="User" checked> User
+            <input type="radio" name="role" value="user" checked> User
         </label>
         <br>
         <label>
-            <input type="radio" name="role" value="Admin"> Admin
+            <input type="radio" name="role" value="admin"> Admin
         </label>
         <br>
         
         
         <label>
-            <input type="radio" name="role" value="Superadmin"> Superadmin
+            <input type="radio" name="role" value="superadmin"> Superadmin
         </label>
         <br><br>
 
@@ -53,16 +53,18 @@
             echo $result['Name'] ;
             ?> -->
 <?php
+
     include("../../commonFiles/_db.php");
     $username = $email = $role =$password= "";
 
    
 
     if($_SERVER['REQUEST_METHOD']=="POST" && (isset($_POST['submitButton']))){
-        if(!empty($_POST['username']) && !empty($_POST['email']) && !empty($_POST['password'])){
+        if(!empty($_POST['username']) && !empty($_POST['email']) && !empty($_POST['password'])&& !empty($_POST['role'])){
             $username=htmlspecialchars($_POST['username']);
             $email=htmlspecialchars($_POST['email']);
             $password=htmlspecialchars($_POST['password']);
+            $role=htmlspecialchars($_POST['role']);
         }
        
         $hash_pass= password_hash($password,PASSWORD_BCRYPT);
@@ -78,6 +80,8 @@
             $stmt->bindParam(':role', $role);
             $stmt->execute();
             echo "User Added Successfully!";
+            $_POST = array();
+
         } catch (\PDOException $e) {
             echo "Database Error: " . $e->getMessage();
         } catch (Exception $e) {

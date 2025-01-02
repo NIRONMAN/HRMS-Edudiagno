@@ -1,30 +1,10 @@
-<?php
-include("../../commonFiles/_init.php");
-
-// Initialize variables for error/success messages
+<?php include("../../commonFiles/_db.php");
+session_start(); 
 $error = $success = "";
-
-if ($_SERVER["REQUEST_METHOD"] == "POST") {
-    $inputUsername = $_POST['username'];
-    $inputPassword = md5($_POST['password']);
-
-    $stmt = $conn->prepare("SELECT * FROM employee WHERE name = :username AND password = :password");
-    $stmt->bindParam(':username', $inputUsername);
-    $stmt->bindParam(':password', $inputPassword);
-    $stmt->execute();
-
-    if ($stmt->rowCount() > 0) {
-        $success = "Login successful! Welcome, " . htmlspecialchars($inputUsername) . ".";
-    } else {
-        $error = "Invalid username or password.";
-    }
-}
 ?>
-
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <?php include("../../commonFiles/_init.php") ?>
     <link rel="stylesheet" href="public/css/login.css">
 </head>
 <body>
@@ -40,14 +20,52 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 
             <form method="POST" action="">
                 <label for="username">Username:</label>
+                <br>
+
                 <input type="text" id="username" name="username" required>
+                <br>
+                <br>
+
 
                 <label for="password">Password:</label>
-                <input type="password" id="password" name="password" required>
+                <br>
 
-                <button type="submit">Login</button>
+                <input type="password" id="password" name="password" required>
+                <br>
+                <br>
+
+
+                <button name="submitButton" type="submit">Login</button>
             </form>
         </div>
     </div>
 </body>
 </html>
+
+<?php
+
+
+if($_SERVER['REQUEST_METHOD']=="POST" && (isset($_POST['submitButton']))){
+    $inputUsername = $_POST['username'];
+    $inputPassword = $_POST['password'];
+    $sql = "SELECT id, password FROM users WHERE username = :username";
+    $stmt = $conn->prepare($sql);
+    $stmt->bindParam(":username", $inputUsername, PDO::PARAM_STR);
+    $stmt->execute();
+    
+    if ($stmt->rowCount() > 0) {
+        $row = $stmt->fetch(PDO::FETCH_ASSOC);
+        if (password_verify($inputPassword, $row['password'])) {
+            $_SESSION["userId"] = $row['id'];
+            $_SESSION["username"] = $inputUsername;
+            $success = "Login successful! Welcome, " . htmlspecialchars($inputUsername) . ".";
+        } else {
+            $error = "<br>Password is invalid.";
+        }
+    } else {
+        $error = "<br>Did not find $inputUsername.";
+    }
+    echo $success;
+    echo $error;
+}
+?>
