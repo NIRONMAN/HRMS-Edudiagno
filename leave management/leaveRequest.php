@@ -28,7 +28,7 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
     <link rel="stylesheet" href="C:\xamp\htdocs\New folder\HRMS-Edudiagno\public\css\leave.css">
 </head>
 <body>
-    <h1>Leave Request Form</h1>
+    <h1>Leave Request Forms</h1>
     <?php if ($error): ?>
         <p class="error"><?= $error ?></p>
     <?php endif; ?>

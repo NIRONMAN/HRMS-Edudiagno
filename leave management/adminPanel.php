@@ -55,7 +55,7 @@ try {
                                 <button type="submit" name="approve">Approve</button>
                             </form>
                         <?php else: ?>
-                            Approved
+                            Approvedd
                         <?php endif; ?>
                     </td>
                 </tr>
