@@ -9,9 +9,22 @@
 </head>
 
 <body>
-    <div>
+    <form action="index.php" method="POST" >
         <div>Home Page</div>
-    </div>
+        <button name="login"> Log in </button>
+        <button name="signup"> Sign up </button>
+
+    </form>
 </body>
 
 </html>
+
+<?php 
+if(isset($_POST["login"])){
+    header("Location: ./auth/login");
+}
+if(isset($_POST["signup"])){
+    header("Location: ./auth/signup");
+}
+
+?>

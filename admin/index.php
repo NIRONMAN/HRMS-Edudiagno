@@ -47,7 +47,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_FILES['excel_file'])) {
             // Execute the statement
             $stmt->execute();
 
-            $msg = "File Uploaded successfully";
+            header("http://localhost/HRMS-Edudiagno/index.php");
         }
     }
 }
@@ -65,15 +65,15 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_FILES['excel_file'])) {
 </head>
 
 <body>
-    <?php echo $msg ?>
-
-    <h2>Upload Attendance Excel File</h2>
-    <form action="" method="POST" enctype="multipart/form-data">
-        <label for="excel_file">Choose an Excel file:</label>
-        <input type="file" name="excel_file" id="excel_file" required>
-        <button type="submit">Upload</button>
-    </form>
-
+    <div class="container d-flex flex-column p-5 gap-2 shadow-none border-0">
+        <h2>Upload Attendance</h2>
+        <form class="d-flex flex-column gap-2" action="" method="POST" enctype="multipart/form-data">
+            <label for="excel_file">Choose an Excel file:</label>
+            <input type="file" name="excel_file" id="excel_file" required>
+            <small class="form-text text-muted">Only .xlsx files are supported. Please upload a valid Excel worksheet.</small>
+            <button type="submit">Upload</button>
+        </form>
+    </div>
 </body>
 
 </html>

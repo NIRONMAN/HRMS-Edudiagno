@@ -87,6 +87,7 @@ VALUES
     (9, "2024-01-03 9:00:00", "2024-01-03 5:00:00"),
     (10, "2024-01-03 9:00:00", "2024-01-03 5:00:00");
 
+
 CREATE TABLE payslip(
     Id int NOT NULL AUTO_INCREMENT,
     EmployeeId int,
@@ -94,4 +95,18 @@ CREATE TABLE payslip(
     TotalEarning FLOAT(20, 2),
     PRIMARY KEY (Id),
     FOREIGN KEY (EmployeeId) REFERENCES employee(Id)
+);
+
+--user schema
+CREATE TABLE users (
+    id INT AUTO_INCREMENT PRIMARY KEY,
+    username VARCHAR(50) NOT NULL UNIQUE,
+    email VARCHAR(100) NOT NULL UNIQUE,
+    password VARCHAR(255) NOT NULL,
+    role VARCHAR(255) NOT NULL,
+    employee_id INT DEFAULT NULL,
+    admin_id INT DEFAULT NULL,
+    superadmin_id INT DEFAULT NULL,
+    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP
 );

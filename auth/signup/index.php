@@ -1,59 +1,94 @@
-<?php include(__DIR__."/commonFiles/_init.php")?>
-
 <!DOCTYPE html>
 <html lang="en">
-
 <head>
-    <?php include("../../commonFiles/htmlHeader.php") ?>
-    <link rel="stylesheet" href="public/css/signup.css">
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Signup Form</title>
 </head>
-
 <body>
-    <div class="container">
-        <div class="form-wrapper">
-            <h1>Sign-Up Page</h1>
-            <form id="employeeForm" class="active" method="post" action="processSignup.php">
-                <input type="hidden" name="role" value="employee">
-                <label for="empName">Employee Name:</label>
-                <input type="text" id="empName" name="empName" required>
-                <label for="empEmail">Email:</label>
-                <input type="email" id="empEmail" name="empEmail" required>
-                <label for="empPassword">Password:</label>
-                <input type="password" id="empPassword" name="empPassword" required>
-                <button type="submit">Sign Up as Employee</button>
-            </form>
+    <h2>Signup Form</h2>
+    <form method="POST" action="index.php">
+        <label for="username">Username:</label>
+        <input type="text" id="username" name="username" required>
+        <br><br>
 
-            <form id="adminForm" method="post" action="processSignup.php">
-                <input type="hidden" name="role" value="admin">
-                <label for="adminName">Admin Name:</label>
-                <input type="text" id="adminName" name="adminName" required>
-                <label for="adminEmail">Email:</label>
-                <input type="email" id="adminEmail" name="adminEmail" required>
-                <label for="adminPassword">Password:</label>
-                <input type="password" id="adminPassword" name="adminPassword" required>
-                <button type="submit">Sign Up as Admin</button>
-            </form>
+        <label for="email">Email:</label>
+        <input type="email" id="email" name="email" required>
+        <br><br>
 
-            <div class="toggle-buttons">
-                <button onclick="showEmployeeForm()">Employee</button>
-                <button onclick="showAdminForm()">Admin</button>
-            </div>
-        </div>
-    </div>
-    <script>
-        const employeeForm = document.getElementById("employeeForm");
-        const adminForm = document.getElementById("adminForm");
+        <label for="password">Password:</label>
+        <input type="password" id="password" name="password" required>
+        <br><br>
 
-        function showEmployeeForm() {
-            employeeForm.classList.add("active");
-            adminForm.classList.remove("active");
-        }
+        <label for="role">Select Role:</label>
+        <br>
+        <label>
+            <input type="radio" name="role" value="user" checked> User
+        </label>
+        <br>
+        <label>
+            <input type="radio" name="role" value="admin"> Admin
+        </label>
+        <br>
+        
+        
+        <label>
+            <input type="radio" name="role" value="superadmin"> Superadmin
+        </label>
+        <br><br>
 
-        function showAdminForm() {
-            adminForm.classList.add("active");
-            employeeForm.classList.remove("active");
-        }
-    </script>
+        <button type="submit" name="submitButton">Sign Up</button>
+    </form>
 </body>
-
 </html>
+<!-- <?php 
+    include("../../commonFiles/_db.php");
+
+            $sql="SELECT * FROM employee";
+            $stmt= $conn ->prepare($sql);
+            
+           $stmt->execute();
+           $result = $stmt->fetch(PDO::FETCH_ASSOC);
+    
+            echo $result['Name'] ;
+            ?> -->
+<?php
+
+    include("../../commonFiles/_db.php");
+    $username = $email = $role =$password= "";
+
+
+
+    if($_SERVER['REQUEST_METHOD']=="POST" && (isset($_POST['submitButton']))){
+        if(!empty($_POST['username']) && !empty($_POST['email']) && !empty($_POST['password'])&& !empty($_POST['role'])){
+            $username=htmlspecialchars($_POST['username']);
+            $email=htmlspecialchars($_POST['email']);
+            $password=htmlspecialchars($_POST['password']);
+            $role=htmlspecialchars($_POST['role']);
+        }
+       
+        $hash_pass= password_hash($password,PASSWORD_BCRYPT);
+
+        $sql="INSERT INTO users (username,email,password,role)
+        VALUES (:username,:email,:password,:role)
+        ";
+        try {
+            $stmt= $conn->prepare($sql);
+            $stmt->bindParam(':username', $username);
+            $stmt->bindParam(':email', $email);
+            $stmt->bindParam(':password', $hash_pass);
+            $stmt->bindParam(':role', $role);
+            $stmt->execute();
+            echo "User Added Successfully!";
+            $_POST = array();
+            header("Location: ../login");
+
+        } catch (\PDOException $e) {
+            echo "Database Error: " . $e->getMessage();
+        } catch (Exception $e) {
+            echo "Error: " . $e->getMessage();
+        }
+
+
+    }
+?>
