@@ -57,7 +57,7 @@
     include("../../commonFiles/_db.php");
     $username = $email = $role =$password= "";
 
-   
+
 
     if($_SERVER['REQUEST_METHOD']=="POST" && (isset($_POST['submitButton']))){
         if(!empty($_POST['username']) && !empty($_POST['email']) && !empty($_POST['password'])&& !empty($_POST['role'])){
@@ -81,6 +81,7 @@
             $stmt->execute();
             echo "User Added Successfully!";
             $_POST = array();
+            header("Location: ../login");
 
         } catch (\PDOException $e) {
             echo "Database Error: " . $e->getMessage();

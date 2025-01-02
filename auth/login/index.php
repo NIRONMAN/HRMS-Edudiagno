@@ -18,7 +18,7 @@ $error = $success = "";
                 <p class="success"><?= $success ?></p>
             <?php endif; ?>
 
-            <form method="POST" action="">
+            <form method="POST" action="index.php">
                 <label for="username">Username:</label>
                 <br>
 
