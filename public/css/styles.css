@@ -1,0 +1,68 @@
+
+body {
+    font-family: Arial, sans-serif;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+    margin: 0;
+    background-color: #f4f4f9;
+}
+
+.container {
+    display: flex;
+    border: 1px solid #ddd;
+    border-radius: 8px;
+    overflow: hidden;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+}
+
+.month-list {
+    display: flex;
+    flex-direction: column;
+    width: 150px;
+    background-color: #ffffff;
+    border-right: 1px solid #ddd;
+}
+
+.month-item {
+    padding: 15px;
+    text-align: center;
+    cursor: pointer;
+    border-bottom: 1px solid #ddd;
+    transition: background-color 0.3s;
+}
+
+.month-item:hover {
+    background-color: #f0f0f0;
+}
+
+.month-item.active {
+    background-color: #ffcdd2;
+    font-weight: bold;
+}
+
+.payslip-display {
+    flex-grow: 1;
+    padding: 20px;
+    background-color: #ffffff;
+}
+
+.payslip-display h2 {
+    margin: 0 0 20px 0;
+}
+
+.payslip-list {
+    list-style-type: none;
+    padding: 0;
+    margin: 0;
+}
+
+.payslip-item {
+    padding: 10px;
+    border-bottom: 1px solid #ddd;
+}
+
+.payslip-item:last-child {
+    border-bottom: none;
+}
