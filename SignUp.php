@@ -5,74 +5,53 @@
 
 <head>
     <?php include("./commonFiles/htmlHeader.php") ?>
-    <link rel="stylesheet" href="<?php echo $CONFIG["ROOT_URL"] . "public/css/signup.css"; ?>">
+    <link rel="stylesheet" href="public/css/signup.css">
 </head>
 
 <body>
     <div class="container">
-        <div class="form-header">
-            <h1>Sign Up</h1>
-        </div>
-
-        
-        <div class="form-switch">
-            <button id="employeeBtn" class="active" onclick="switchForm('employee')">Employee</button>
-            <button id="adminBtn" onclick="switchForm('admin')">Admin</button>
-        </div>
-
-        
-        <form id="employeeForm" class="active" method="post" action="processSignup.php">
-            <div class="form-group">
-                <label for="empName">Full Name</label>
+        <div class="form-wrapper">
+            <h1>Sign-Up Page</h1>
+            <form id="employeeForm" class="active" method="post" action="processSignup.php">
+                <input type="hidden" name="role" value="employee">
+                <label for="empName">Employee Name:</label>
                 <input type="text" id="empName" name="empName" required>
-            </div>
-            <div class="form-group">
-                <label for="empEmail">Email</label>
+                <label for="empEmail">Email:</label>
                 <input type="email" id="empEmail" name="empEmail" required>
-            </div>
-            <div class="form-group">
-                <label for="empPassword">Password</label>
+                <label for="empPassword">Password:</label>
                 <input type="password" id="empPassword" name="empPassword" required>
-            </div>
-            <div class="form-group">
-                <button type="submit" name="role" value="employee">Sign Up as Employee</button>
-            </div>
-        </form>
+                <button type="submit">Sign Up as Employee</button>
+            </form>
 
-        
-        <form id="adminForm" method="post" action="processSignup.php">
-            <div class="form-group">
-                <label for="adminName">Full Name</label>
+            <form id="adminForm" method="post" action="processSignup.php">
+                <input type="hidden" name="role" value="admin">
+                <label for="adminName">Admin Name:</label>
                 <input type="text" id="adminName" name="adminName" required>
-            </div>
-            <div class="form-group">
-                <label for="adminEmail">Email</label>
+                <label for="adminEmail">Email:</label>
                 <input type="email" id="adminEmail" name="adminEmail" required>
-            </div>
-            <div class="form-group">
-                <label for="adminPassword">Password</label>
+                <label for="adminPassword">Password:</label>
                 <input type="password" id="adminPassword" name="adminPassword" required>
+                <button type="submit">Sign Up as Admin</button>
+            </form>
+
+            <div class="toggle-buttons">
+                <button onclick="showEmployeeForm()">Employee</button>
+                <button onclick="showAdminForm()">Admin</button>
             </div>
-            <div class="form-group">
-                <button type="submit" name="role" value="admin">Sign Up as Admin</button>
-            </div>
-        </form>
+        </div>
     </div>
-
     <script>
-        function switchForm(role) {
-            document.getElementById('employeeForm').classList.remove('active');
-            document.getElementById('adminForm').classList.remove('active');
-            document.getElementById('employeeBtn').classList.remove('active');
-            document.getElementById('adminBtn').classList.remove('active');
+        const employeeForm = document.getElementById("employeeForm");
+        const adminForm = document.getElementById("adminForm");
 
-            if (role === 'employee') {
-                document.getElementById('employeeForm').classList.add('active');
-                document.getElementById('employeeBtn').classList.add('active');
-            } else {
-                document.getElementById('adminForm').classList.add('active');
-                document.getElementById('adminBtn').classList.add('active');
-            }
+        function showEmployeeForm() {
+            employeeForm.classList.add("active");
+            adminForm.classList.remove("active");
+        }
+
+        function showAdminForm() {
+            adminForm.classList.add("active");
+            employeeForm.classList.remove("active");
         }
     </script>
 </body>
