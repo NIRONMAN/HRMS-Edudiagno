@@ -1,157 +1,120 @@
 <?php include("../commonFiles/_init.php") ?>
+<?php include("../commonFiles/_db.php") ?>
+
+<?php
+if (!isset($_GET['month'])) {
+    $_GET['month'] = 0;
+}
+
+$month = $_GET['month'];
+
+$stmt = $conn->prepare("SELECT * FROM employee WHERE id = :employeeId");
+$stmt->bindParam(':employeeId', $_GET['employeeId']);
+$stmt->execute();
+$employeeData = $stmt->fetch();
+?>
 
 <!DOCTYPE html>
 <html lang="en">
 
 <head>
     <?php include("../commonFiles/htmlHeader.php") ?>
+    <link rel="stylesheet" href=<?php echo $CONFIG["ROOT_URL"] . "public/css/styles.css" ?>>
 </head>
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Monthwise Payslip</title>
-    <style>
-        body {
-            font-family: Arial, sans-serif;
-            margin: 0;
-            padding: 0;
-            background-color: #f4f4f9;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            height: 100vh;
-        }
 
-        .container {
-            display: flex;
-            width: 80%;
-            height: 80%;
-            border: 1px solid #ddd;
-            border-radius: 8px;
-            overflow: hidden;
-            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
-        }
-
-        .month-list {
-            width: 30%;
-            background-color: #ffffff;
-            border-right: 1px solid #ddd;
-            overflow-y: auto;
-        }
-
-        .month-item {
-            padding: 15px;
-            text-align: left;
-            cursor: pointer;
-            border-bottom: 1px solid #ddd;
-            transition: background-color 0.3s;
-        }
-
-        .month-item:hover {
-            background-color: #f0f0f0;
-        }
-
-        .month-item.active {
-            background-color: #ffcdd2;
-            font-weight: bold;
-        }
-
-        .payslip-display {
-            flex-grow: 1;
-            padding: 20px;
-            background-color: #ffffff;
-            overflow-y: auto;
-        }
-
-        .payslip-display h2 {
-            margin-bottom: 20px;
-            font-size: 1.5em;
-            color: #333;
-        }
-
-        .payslip-details {
-            border: 1px solid #ddd;
-            border-radius: 8px;
-            padding: 20px;
-            background-color: #f9f9f9;
-        }
-
-        .payslip-details table {
-            width: 100%;
-            border-collapse: collapse;
-        }
-
-        .payslip-details th, .payslip-details td {
-            padding: 10px;
-            text-align: left;
-            border-bottom: 1px solid #ddd;
-        }
-
-        .payslip-details th {
-            background-color: #f4f4f4;
-        }
-   
-    </style>
-</head>
 <body>
     <div class="container">
-        <div class="month-list">
-            <?php
-            // Connect to the database
-            $conn = new mysqli("localhost", "root", "", "payslip_db");
+        <div class="col text-center">
+            <?php if (isset($_GET['employeeId'])): ?>
 
-            // Check connection
-            if ($conn->connect_error) {
-                die("Connection failed: " . $conn->connect_error);
-            }
+                <div class="container">
+                    <div class="month-list col-1">
+                        <?php
+                        $currentMonth = new DateTime();
+                        $employeeId = $employeeData["Id"];
 
-            $months = [
-                "January", "February", "March", "April", "May", "June",
-                "July", "August", "September", "October", "November", "December"
-            ];
+                        for ($i = 0; $i < 12; $i++) {
+                            $active = (isset($_GET['month']) && $month == $i) ? 'active' : '';
 
-            foreach ($months as $index => $month) {
-                $active = (isset($_GET['month']) && $_GET['month'] === $month) ? 'active' : '';
-                echo "<div class='month-item $active' onclick=\"window.location.href='?month=$month'\">$month</div>";
-            }
+                            echo "<div class='month-item text-start text-nowrap overflow-clip text-truncate $active' onclick=\"window.location.href='?month=$i&employeeId=$employeeId'\">" . $currentMonth->format("F Y") . "</div>";
 
-            ?>
-        </div>
+                            $currentMonth->modify("-1 month");
+                        }
+                        ?>
+                    </div>
 
-        <div class="payslip-display">
-            <?php
-            $selectedMonth = isset($_GET['month']) ? $_GET['month'] : 'January';
+                    <div id="payslip" class="payslip-display col-3 d-flex flex-column">
+                        <h1>
+                            <?php
+                            echo $employeeData["Name"];
+                            ?>
+                        </h1>
+                        <div class="container">
+                            <div class="row">
+                                <div class="col-3 p-4">Employee Id: <?php echo $employeeData["Id"] ?></div>
+                                <div class="col-3 p-4">Date Joined: <?php echo $employeeData["DateJoined"] ?></div>
+                                <div class="col-3 p-4">Department: <?php echo $employeeData["Department"] ?></div>
+                                <div class="col-3 p-4">Sub Department: <?php echo $employeeData["SubDepartment"] ?></div>
+                                <div class="col-3 p-4">Designation: <?php echo $employeeData["Designation"] ?></div>
+                                <div class="col-3 p-4">Payment Mode: <?php echo $employeeData["PaymentMode"] ?></div>
+                                <div class="col-3 p-4">Bank: <?php echo $employeeData["Bank"] ?></div>
+                                <div class="col-3 p-4">Bank IFSC: <?php echo $employeeData["BankIFSC"] ?></div>
+                                <div class="col-3 p-4">Bank Account: <?php echo $employeeData["BankAccount"] ?></div>
+                                <div class="col-3 p-4">UAN: <?php echo $employeeData["UAN"] ?></div>
+                                <div class="col-3 p-4">PF Number: <?php echo $employeeData["PFNumber"] ?></div>
+                                <div class="col-3 p-4">PAN Number: <?php echo $employeeData["PANNumber"] ?></div>
+                            </div>
+                        </div>
 
-            // Fetch payslip details for the selected month
-            $stmt = $conn->prepare("SELECT * FROM payslips WHERE month = ?");
-            $stmt->bind_param("s", $selectedMonth);
-            $stmt->execute();
-            $result = $stmt->get_result();
+                        <div class="container flex-grow-1 gap-4 d-flex flex-column my-2 p-3">
+                            <h3 class="">Salary Details</h3>
+                            <div class="d-flex justify-content-center">
+                                Total Working Hours:
+                                <?php
 
-            if ($result->num_rows > 0) {
-                $row = $result->fetch_assoc();
+                                // // Fetch payslip details for the selected month
+                                $stmt = $conn->prepare("SELECT * FROM attendance WHERE employeeId = :employeeId AND InTime BETWEEN :monthStart AND :monthEnd");
 
-                echo "<h2>Payslip for $selectedMonth</h2>";
-                echo "<div class='payslip-details'>";
-                echo "<table>";
-                echo "<tr><th>Employee Number</th><td>{$row['employee_number']}</td></tr>";
-                echo "<tr><th>Date Joined</th><td>{$row['date_joined']}</td></tr>";
-                echo "<tr><th>Department</th><td>{$row['department']}</td></tr>";
-                echo "<tr><th>Designation</th><td>{$row['designation']}</td></tr>";
-                echo "<tr><th>Bank Account</th><td>{$row['bank_account']}</td></tr>";
-                echo "<tr><th>Net Salary</th><td>{$row['net_salary']}</td></tr>";
-                echo "</table>";
-                echo "</div>";
-            } else {
-                echo "<h2>No Payslip Found for $selectedMonth</h2>";
-            }
+                                $monthStart = new DateTime();
+                                $monthStart->modify("-$month month");
+                                $monthStart->modify("first day of this month 00:00:00");
 
-            $stmt->close();
-            $conn->close();
-            ?>
+                                $monthEnd = new DateTime();
+                                $monthEnd->modify("-$month month");
+                                $monthEnd->modify("last day of this month 23:59:59");
+
+                                $stmt->bindParam("employeeId", $employeeData["Id"]);
+                                $stmt->bindParam("monthStart", $monthStart->format("Y-m-d H:i:s"));
+                                $stmt->bindParam("monthEnd", $monthEnd->format("Y-m-d H:i:s"));
+                                $stmt->execute();
+                                $result = $stmt->fetchAll();
+
+                                $totalWorkHours = 0;
+
+                                foreach ($result as $row) {
+                                    $interval = (new DateTime($row["InTime"]))->diff(new DateTime($row["OutTime"]));
+
+                                    $totalWorkHours += $interval->h * 3600 + $interval->i * 60 + $interval->s;
+                                }
+
+                                echo $totalWorkHours / 3600;
+                                ?>
+                            </div>
+                            <div class="d-flex justify-content-center">Total Earning: <?php echo $totalWorkHours / 3600 * 100 ?></div>
+                        </div>
+                        <button id="print" class="mt-auto ms-auto no-print">Print</button>
+                    </div>
+                </div>
+            <?php endif; ?>
         </div>
     </div>
+    <script>
+        let printBtn = document.querySelector("#print");
+        printBtn.addEventListener("click", (e) => {
+            let paySlip = document.querySelector("payslip");
+            window.print();
+        });
+    </script>
 </body>
-    
-</html>
 
+</html>

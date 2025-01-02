@@ -1,2 +1,3 @@
 commonFiles/_init.php
 vendor
+composer.phar

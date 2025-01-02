@@ -86,3 +86,12 @@ VALUES
     (8, "2024-01-03 9:00:00", "2024-01-03 5:00:00"),
     (9, "2024-01-03 9:00:00", "2024-01-03 5:00:00"),
     (10, "2024-01-03 9:00:00", "2024-01-03 5:00:00");
+
+CREATE TABLE payslip(
+    Id int NOT NULL AUTO_INCREMENT,
+    EmployeeId int,
+    TotalWorkingHours int,
+    TotalEarning FLOAT(20, 2),
+    PRIMARY KEY (Id),
+    FOREIGN KEY (EmployeeId) REFERENCES employee(Id)
+);
