@@ -9,7 +9,12 @@
 </head>
 
 <body>
-    <div class="d-flex flex-column">
+    <div class="<?php
+                if ($_SERVER['REQUEST_METHOD'] != "POST") {
+                    echo "d-flex flex-column active";
+                } else {
+                    echo "flex-column not-active";
+                } ?>">
         <h2 class="p-4">Signup</h2>
         <form class="d-flex flex-column gap-4" method="POST" action="index.php">
             <div class="row">

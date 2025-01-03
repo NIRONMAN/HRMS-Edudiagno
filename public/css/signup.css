@@ -73,10 +73,10 @@ button:hover {
     color: white;
 }
 
-form {
-    /* display: none; */
+.not-active {
+    display: none;
 }
 
-form.active {
+.active {
     display: block;
 }
