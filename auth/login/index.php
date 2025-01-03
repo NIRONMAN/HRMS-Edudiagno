@@ -1,12 +1,14 @@
 <?php include("../../commonFiles/_db.php");
-session_start(); 
+session_start();
 $error = $success = "";
 ?>
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
-    <link rel="stylesheet" href="public/css/login.css">
+    <link rel="stylesheet" href=<?php echo $CONFIG["ROOT_URL"] . "public/css/login.css" ?>>
 </head>
+
 <body>
     <div class="container">
         <div class="form-wrapper">
@@ -40,19 +42,20 @@ $error = $success = "";
         </div>
     </div>
 </body>
+
 </html>
 
 <?php
 
 
-if($_SERVER['REQUEST_METHOD']=="POST" && (isset($_POST['submitButton']))){
+if ($_SERVER['REQUEST_METHOD'] == "POST" && (isset($_POST['submitButton']))) {
     $inputUsername = $_POST['username'];
     $inputPassword = $_POST['password'];
     $sql = "SELECT id, password FROM users WHERE username = :username";
     $stmt = $conn->prepare($sql);
     $stmt->bindParam(":username", $inputUsername, PDO::PARAM_STR);
     $stmt->execute();
-    
+
     if ($stmt->rowCount() > 0) {
         $row = $stmt->fetch(PDO::FETCH_ASSOC);
         if (password_verify($inputPassword, $row['password'])) {
